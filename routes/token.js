@@ -16,7 +16,7 @@ router.get('/token/:id', async function (req, res, next) {
         res.status(200).json({
             hash,
             name: `Stairway To Chain - #${id}`,
-            description: `Generative NFT collection with limited supply, which is stored on Ethereum Blockchain. Inspired by on-chain art platform "Art Blocks".`,
+            description: `Generative NFT collection with limited supply with the scripts stored on Ethereum Blockchain. Inspired by on-chain art platform "Art Blocks".`,
             animation_url: `${baseURI}/generator/${id}`,
             token_uri: `${baseURI}/api/token/${id}`,
             attributes: metadata || [],

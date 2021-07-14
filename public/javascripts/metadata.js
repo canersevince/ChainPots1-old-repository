@@ -101,7 +101,7 @@ module.exports = function getAttributes(hash) {
     return [
         {
             "trait_type": "Stair Count",
-            "value": stairnum
+            "value": stairnum?.toString()
         },
         {
             "trait_type": "Light Tone",
@@ -109,15 +109,15 @@ module.exports = function getAttributes(hash) {
         },
         {
             "trait_type": "Grid Size",
-            "value": gridsize
+            "value": gridsize?.toString()
         },
         {
             "trait_type": "Palette",
-            "value": colorNames[paletteIndex]
+            "value": colorNames[paletteIndex]?.toString()
         },
         {
             "trait_type": "Palette Colors",
-            "value": palette
+            "value": JSON.stringify(palette)
         },
     ]
 }

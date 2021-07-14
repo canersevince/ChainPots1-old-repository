@@ -6,7 +6,7 @@ var getAttributes = require('../public/javascripts/metadata')
 router.get('/token/:id', async function (req, res, next) {
     try {
         let id = req.params.id
-        if (!id) {
+        if (id === null || typeof id == "undefined") {
             res.status(404)
             return
         }

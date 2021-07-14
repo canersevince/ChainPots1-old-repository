@@ -4,7 +4,7 @@ var {contractAddress,contract,baseURI} = require('../utils')
 
 router.get('/:tokenId', async function(req, res, next) {
     let id = req.params.tokenId
-    if(!id) {
+    if (id === null || typeof id == "undefined") {
         res.status(404)
         return
     }

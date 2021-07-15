@@ -19,7 +19,7 @@ router.get('/token/:id', async function (req, res, next) {
         }
         const cached = await mc.get(`token_${id.toString()}`)
         if (cached) {
-            res.status(200).json(JSON.parse(cached))
+            res.status(200).json(cached)
             return
         }
         isBusy = true

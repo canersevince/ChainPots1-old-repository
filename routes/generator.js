@@ -14,6 +14,7 @@ router.get('/:tokenId', async function (req, res, next) {
         console.log('serving cache')
         return
     }
+
     try {
         const hash = await contract.tokenHash(id)
         if(!hash) {

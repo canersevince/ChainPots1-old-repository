@@ -15,8 +15,9 @@ router.get('/token/:id', async function (req, res, next) {
         let metadata = getAttributes(hash)
         console.info('Creating Thumbnail')
         let image = await thumbnail(id)
-        if (image[0]) {
-            image = `data:image/png;base64,${image[0].toString('base64')}`
+        console.log(image)
+        if (image) {
+            image = `data:image/png;base64,${image}`
         }
 
         console.log({metadata})

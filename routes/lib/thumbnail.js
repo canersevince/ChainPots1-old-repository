@@ -1,7 +1,15 @@
 const {baseURI} = require('../../utils')
-const Pageres = require('pageres');
+const puppeteer = require('puppeteer');         // Require Puppeteer module
 
 module.exports = async (tokenId) => {
-    return await new Pageres({delay: 2, launchOptions: {headless: true, args: ['--no-sandbox']}})
-        .src(`${baseURI}/generator/${tokenId}`, ['400x400'], {crop: true}).run()
+    const browser = await puppeteer.launch();    // Launch a "browser"
+    const page = await browser.newPage();        // Open a new page
+    await page.goto(`${baseURI}/generator/${tokenId}`);                        // Go to the website
+    let ss = await page.screenshot({                      // Screenshot the website using defined options
+        fullPage: true,
+        encoding: "base64"// take a fullpage screenshot
+    });
+    await page.close();                           // Close the website
+    await browser.close();
+    return ss
 }

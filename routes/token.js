@@ -17,11 +17,11 @@ router.get('/token/:id', async function (req, res, next) {
             res.status(202)
             return
         }
-        await mc.get(id.toString(), function (err, val) {
+        await mc.get(`token_${id.toString()}`, function (err, val) {
             if (err != null) {
                 console.log('Error getting value: ' + err)
             } else {
-                res.status(200).json(val)
+                res.status(200).json(JSON.parse(val))
                 return
             }
         })
@@ -52,7 +52,7 @@ router.get('/token/:id', async function (req, res, next) {
             script_type: "p5js",
             aspect_ratio: "1",
         }
-        await mc.set(id?.toString(), metadata$
+        await mc.set(`token_${id}`, JSON.stringify(metadata$)
             , {expires: 0}, function (err, val) {
                 if (err != null) {
                     console.log('Error setting value: ' + err)

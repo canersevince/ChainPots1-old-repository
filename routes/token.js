@@ -18,6 +18,7 @@ router.get('/token/:id', async function (req, res, next) {
         if (image[0]) {
             image = `data:image/png;base64,${image[0].toString('base64')}`
         }
+
         console.log({metadata})
         res.status(200).json({
             image,

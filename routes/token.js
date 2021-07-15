@@ -38,7 +38,6 @@ router.get('/token/:id', async function (req, res, next) {
         if (image) {
             image = `https://ipfs.infura.io/ipfs/${image}`
         }
-        console.log({metadata})
         isBusy = false;
         let metadata$ = {
             image,
@@ -52,8 +51,9 @@ router.get('/token/:id', async function (req, res, next) {
             script_type: "p5js",
             aspect_ratio: "1",
         }
+        console.log({metadata$})
         await mc.set(`token_${id}`, JSON.stringify(metadata$)
-            , {expires: 0}, function (err, val) {
+            , {expires: 0, 1200}, function (err, val) {
                 if (err !== null) {
                     console.log('Error setting value: ' + err)
                     res.status(500).json(err)

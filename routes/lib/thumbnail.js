@@ -31,7 +31,7 @@ module.exports = async (tokenId) => {
             browser = await puppeteer.launch({
                 defaultViewport: {width: 275, height: 275},
                 headless: true,
-                args: ['--no-sandbox']
+                args: ['--no-sandbox'],
             });
         }
         // Launch a "browser"

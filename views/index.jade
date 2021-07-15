@@ -1,12 +1,25 @@
 extends layout
 
 block content
-    h1= title
-    p Welcome to #{title}
-    div#stairwayRenderer
-
-
-
+    div.container.sale-main.d-flex.align-items-center.justify-content-center
+        div.row
+            div.col-12.col-lg-6.d-flex.align-items-center.justify-content-center
+                div.stairway-main.d-flex.align-items-center.justify-content-center.flex-column
+                    h1.text-white.text-center Stairway to Chain - TESTNET
+                    p.text-white.text-center Generative NFT collection by <a href="https://twitter.com/memorycollect0r">memorycollect0r</a> with limited supply and the scripts stored on Ethereum Blockchain. Inspired by on-chain art platform "Art Blocks".
+                    div.d-flex.flex-column.align-items-center.justify-content-center
+                        div.loader
+                            div.lds-facebook
+                                div
+                                div
+                                div
+                                div
+                        p.text-white.font-weight-bold Price: 0.05Ξ
+                        p.text-white#current-supply
+                        input#mintAmount(value=1,type="number", step=1, min=1, max=20).mt-2.form-control
+                        button#mintButton.mt-4.btn.custom.text-white MINT
+            div.col-12.col-lg-6.d-flex.align-items-center.justify-content-center
+                iframe#showcase(src="/generator/0", style={width: "400px", height: "400px"})
 
 
 

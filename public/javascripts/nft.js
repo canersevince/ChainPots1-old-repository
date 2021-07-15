@@ -22,7 +22,7 @@ class Random {
 let WH = Math.min(window.innerWidth, window.innerHeight)
 let WIDTH = WH
 let HEIGHT = WH
-let tokenData = { "hash": "0xb871cd70edae9a70815520d7e7ea2d65ded3912b02d3f6e283e5f5fad167b313" }
+let tokenData = { "hash": "0x311212f7717479a0afde9357db37dbb6de85321e6529900b191d7dda3ad89e8e" }
 //let tokenData = { "hash": "0xb871cd70edae9a70815520d7e7ea2d65ded3912b02d3f6e283e5f5fad167b313" }
 let seed = parseInt(tokenData.hash.slice(0, 16), 16);
 let rng = new Random(seed);
@@ -74,6 +74,7 @@ let stairnum = rng.random_int(3,6);
 let gridsize = rng.random_int(8,36)
 function setup() {
     renderer = createCanvas(WIDTH, HEIGHT, WEBGL);
+    renderer.canvas.classList.add("stairwayRenderer")
     ortho(-width/2, width/2, -height/2, height/2, 0.01, 10000);
     castle = new Castle();
 }

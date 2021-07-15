@@ -27,7 +27,7 @@ const uploadFile = async (file) => {
 
 module.exports = async (tokenId) => {
     const browser = await puppeteer.launch({
-        defaultViewport: {width: 400, height: 400},
+        defaultViewport: {width: 275, height: 275},
         headless: true,
         args: ['--no-sandbox']
     });    // Launch a "browser"
@@ -35,7 +35,8 @@ module.exports = async (tokenId) => {
     await page.goto(`${baseURI}/generator/${tokenId}`);                        // Go to the website
     let ss = await page.screenshot({                      // Screenshot the website using defined options
         fullPage: true,
-        type: "jpeg"
+        type: "jpeg",
+        quality: 80
         // encoding: "base64"// take a fullpage screenshot
     });
     await page.close();                           // Close the website

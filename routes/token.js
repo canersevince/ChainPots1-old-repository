@@ -13,11 +13,11 @@ router.get('/token/:id', async function (req, res, next) {
             res.status(404)
             return
         }
-        if(isBusy){
-            res.status(201)
+        if (isBusy) {
+            res.status(202)
             return
         }
-        await mc.get(id, function (err, val) {
+        await mc.get(id.toString(), function (err, val) {
             if (err != null) {
                 console.log('Error getting value: ' + err)
             } else {
@@ -27,6 +27,10 @@ router.get('/token/:id', async function (req, res, next) {
         })
         isBusy = true
         const hash = await contract.tokenHash(id)
+        if (!hash) {
+            res.status(404)
+            return
+        }
         let metadata = getAttributes(hash)
         console.info('Creating Thumbnail')
         let image = await thumbnail(id)
@@ -36,7 +40,7 @@ router.get('/token/:id', async function (req, res, next) {
         }
         console.log({metadata})
         isBusy = false;
-        await mc.set(id, {
+        let metadata$ = {
             image,
             hash,
             name: `Stairway To Chain - #${id}`,
@@ -47,12 +51,16 @@ router.get('/token/:id', async function (req, res, next) {
             external_url: `${baseURI}/token/${id}`,
             script_type: "p5js",
             aspect_ratio: "1",
-        }, {expires: 0}, function (err, val) {
-            if (err != null) {
-                console.log('Error setting value: ' + err)
-            }
-            res.status(200).json(val)
-        })
+        }
+        await mc.set(id?.toString(), metadata$
+            , {expires: 0}, function (err, val) {
+                if (err != null) {
+                    console.log('Error setting value: ' + err)
+                    res.status(500).json(err)
+                    return
+                }
+                res.status(200).json(val)
+            })
     } catch (e) {
         console.log(e)
         res.status(404)

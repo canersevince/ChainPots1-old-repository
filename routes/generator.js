@@ -16,6 +16,10 @@ router.get('/:tokenId', async function (req, res, next) {
     }
     try {
         const hash = await contract.tokenHash(id)
+        if(!hash) {
+            res.status(404)
+            return
+        }
         cached[id] = hash
         res.render('generator', {hash: hash});
     } catch (e) {

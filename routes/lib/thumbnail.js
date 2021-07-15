@@ -1,5 +1,29 @@
 const {baseURI} = require('../../utils')
 const puppeteer = require('puppeteer');         // Require Puppeteer module
+const ipfsClient =  require('ipfs-http-client')
+
+const ipfsHost = "ipfs.infura.io"
+const ipfs = ipfsClient.create({
+    host: ipfsHost,
+    port: 5001,
+    protocol: "https",
+})
+
+const uploadFile = async (file) => {
+    try {
+        const added = await ipfs.add(
+            file
+        )
+
+        if (!added.path) {
+            return
+        }
+
+        return added.path
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 module.exports = async (tokenId) => {
     const browser = await puppeteer.launch({
@@ -11,9 +35,11 @@ module.exports = async (tokenId) => {
     await page.goto(`${baseURI}/generator/${tokenId}`);                        // Go to the website
     let ss = await page.screenshot({                      // Screenshot the website using defined options
         fullPage: true,
-        encoding: "base64"// take a fullpage screenshot
+        type: "jpeg"
+        // encoding: "base64"// take a fullpage screenshot
     });
     await page.close();                           // Close the website
     await browser.close();
-    return ss
+    let hash = await uploadFile(ss)
+    return hash
 }

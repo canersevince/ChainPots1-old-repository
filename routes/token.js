@@ -17,7 +17,7 @@ router.get('/token/:id', async function (req, res, next) {
         let image = await thumbnail(id)
         console.log(image)
         if (image) {
-            image = `data:image/png;base64,${image}`
+            image = `https://ipfs.infura.io/ipfs/${image}`
         }
 
         console.log({metadata})

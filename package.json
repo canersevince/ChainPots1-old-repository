@@ -11,6 +11,7 @@
     "ethers": "^5.4.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "ipfs-http-client": "^50.1.2",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "puppeteer": "^10.1.0"

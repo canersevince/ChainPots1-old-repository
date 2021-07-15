@@ -53,7 +53,7 @@ router.get('/token/:id', async function (req, res, next) {
         }
         console.log({metadata$})
         await mc.set(`token_${id}`, JSON.stringify(metadata$)
-            , {expires: 0, 1200}, function (err, val) {
+            , {expires: 1200}, function (err, val) {
                 if (err !== null) {
                     console.log('Error setting value: ' + err)
                     res.status(500).json(err)

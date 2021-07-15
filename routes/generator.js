@@ -17,7 +17,7 @@ router.get('/:tokenId', async function (req, res, next) {
 
     try {
         const hash = await contract.tokenHash(id)
-        if(!hash) {
+        if (!hash) {
             res.status(404)
             return
         }
@@ -27,5 +27,10 @@ router.get('/:tokenId', async function (req, res, next) {
         console.log(e.message)
     }
 });
-
+router.get('/clear/:id', async function (req, res, next) {
+    cached[req.params.id] = null
+    res.status(200).json({
+        cache: "cleared"
+    })
+});
 module.exports = router;

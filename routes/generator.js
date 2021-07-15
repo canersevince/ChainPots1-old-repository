@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var {contractAddress, contract, baseURI} = require('../utils')
+var {contract} = require('../utils')
 
 let cached = {}
 router.get('/:tokenId', async function (req, res, next) {

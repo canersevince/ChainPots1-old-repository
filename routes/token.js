@@ -4,13 +4,17 @@ var {contract, baseURI, mc} = require('../utils')
 var thumbnail = require('./lib/thumbnail')
 var getAttributes = require('../public/javascripts/metadata')
 /* GET home page. */
-
+let isBusy;
 
 router.get('/token/:id', async function (req, res, next) {
     try {
         let id = req.params.id
         if (id === null || typeof id == "undefined") {
             res.status(404)
+            return
+        }
+        if(isBusy){
+            res.status(201)
             return
         }
         await mc.get(id, function (err, val) {
@@ -21,6 +25,7 @@ router.get('/token/:id', async function (req, res, next) {
                 return
             }
         })
+        isBusy = true
         const hash = await contract.tokenHash(id)
         let metadata = getAttributes(hash)
         console.info('Creating Thumbnail')
@@ -30,6 +35,7 @@ router.get('/token/:id', async function (req, res, next) {
             image = `https://ipfs.infura.io/ipfs/${image}`
         }
         console.log({metadata})
+        isBusy = false;
         await mc.set(id, {
             image,
             hash,

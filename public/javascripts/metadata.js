@@ -97,7 +97,6 @@ module.exports = function getAttributes(hash) {
     let stairnum = rng.random_int(3, 6);
     let gridsize = rng.random_int(8, 36)
     let paletteIndex = palettes.indexOf(palette)
-    console.log({paletteIndex})
     return [
         {
             "trait_type": "Stair Count",

@@ -4,7 +4,7 @@ var memjs = require('memjs')
 
 const settings = {
     baseURI: "https://stairwaytochain.herokuapp.com",
-    contractAddress: "0xAfFB101A5168ed99D7642746aC5390d8F7CF271E",
+    contractAddress: "0xFb621De1C5D79B1f42487b03d23b0E7651087cdD",
     infuraAPI: "https://rinkeby.infura.io/v3/8f5b089af6e9483ca2ba3b01f9f5a442"
 }
 const provider = new ethers.providers.getDefaultProvider(settings.infuraAPI)

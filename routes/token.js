@@ -42,7 +42,7 @@ router.get('/token/:id', async function (req, res, next) {
         let metadata$ = {
             image,
             hash,
-            name: `Stairway To Chain - #${id}`,
+            name: `Non Fungible Pot - #${id}`,
             description: `Generative NFT collection with limited supply and the scripts stored on Ethereum Blockchain. Inspired by on-chain art platform "Art Blocks".`,
             animation_url: `${baseURI}/generator/${id}`,
             token_uri: `${baseURI}/api/token/${id}`,

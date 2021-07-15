@@ -180,7 +180,7 @@ const ContractABI = [
     },
     {
         "inputs": [],
-        "name": "MAX_STAIRS",
+        "name": "MAX_POTS",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -346,11 +346,11 @@ const ContractABI = [
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "maxStairs",
+                "name": "maxPOTS",
                 "type": "uint256"
             }
         ],
-        "name": "mintStairs",
+        "name": "mintPots",
         "outputs": [],
         "stateMutability": "payable",
         "type": "function"

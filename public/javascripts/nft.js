@@ -1,34 +1,34 @@
+
+let tokenData = { "hash": "0x311212f7717479a0afde9357db37dbb6de85321e6529900b191d7dda3ad89e8e" }
+//let tokenData = { "hash": "0xb871cd70edae9a70815520d7e7ea2d65ded3912b02d3f6e283e5f5fad167b313" }
 class Random {
     constructor(seed) {
         this.seed = seed
     }
+
     random_dec() {
         this.seed ^= this.seed << 13
         this.seed ^= this.seed >> 17
         this.seed ^= this.seed << 5
         return ((this.seed < 0 ? ~this.seed + 1 : this.seed) % 1000) / 1000
     }
+
     random_between(a, b) {
         return a + (b - a) * this.random_dec()
     }
+
     random_int(a, b) {
         return Math.floor(this.random_between(a, b + 1))
     }
+
     random_choice(x) {
         return x[Math.floor(this.random_between(0, x.length * 0.99))]
     }
 }
 
-let WH = Math.min(window.innerWidth, window.innerHeight)
-let WIDTH = WH
-let HEIGHT = WH
-let tokenData = { "hash": "0x311212f7717479a0afde9357db37dbb6de85321e6529900b191d7dda3ad89e8e" }
 //let tokenData = { "hash": "0xb871cd70edae9a70815520d7e7ea2d65ded3912b02d3f6e283e5f5fad167b313" }
 let seed = parseInt(tokenData.hash.slice(0, 16), 16);
 let rng = new Random(seed);
-let renderer;
-let castle;
-let timeval;
 let palettes = [
     "333333-839788-eee0cb-baa898-bfd7ea", //
     "585123-eec170-f2a65a-f58549-772f1a",
@@ -61,212 +61,128 @@ let palettes = [
     "212529-000000-adb5bd-495057-f8f9fa", // HappilyDepressedSoul
 ].map(palette => palette.split('-').map(c => '#' + c))
 let palette = rng.random_choice(palettes);
-const ColorPalette = Object.freeze({
-    "dark": palette[1],
-    "light": palette[3],
-    "shadow": palette[2],
-    "shade" : palette[0],
-    "white" : palette[4]
-});
-let timeRandomness = rng.random_between(0,1)
-let isNight = timeRandomness < 0.05;
-let stairnum = rng.random_int(3,6);
-let gridsize = rng.random_int(8,36)
+let aObj$ = [];
+let bG;
+let on$
+let nsr$
+let noiseStepObj
+let offset$
+let nsdt$
+let npd$
+let ddn$
+
 function setup() {
-    renderer = createCanvas(WIDTH, HEIGHT, WEBGL);
+    bG = color(palette[0]);
+    noiseSeed(seed)
+    let cSize$;
+    if (windowWidth <= windowHeight) {
+        cSize$ = windowWidth;
+    } else {
+        cSize$ = windowHeight;
+    }
+    let renderer = createCanvas(cSize$, cSize$);
     renderer.canvas.classList.add("stairwayRenderer")
-    ortho(-width/2, width/2, -height/2, height/2, 0.01, 10000);
-    castle = new Castle();
+
+    frameRate(34);
+    noStroke();
+    on$ = rng.random_int(20, 100)
+    ddn$ = rng.random_int(30, 180);
+    let rm$ = width / 10 * 12;
+    let yGap = height / on$ / 1.5;
+    nsr$ = rng.random_int(0, 10);
+    noiseStepObj = rng.random_between(0.001, 0.1);
+    offset$ = -0.5;
+    nsdt$ = rng.random_int(0, 10);
+    npd$ = rng.random_between(0.001,0.01);
+    for (let i = 0; i < on$; i++) {
+        let myV$ = new V$(rm$, i, on$, yGap,
+            ddn$, nsr$, nsdt$ + i * noiseStepObj,
+            npd$, offset$);
+        aObj$.push(myV$);
+    }
 }
+
+class V$ {
+    constructor(rm$, oi$, on$, yGap,
+                ddn$, nsr$, nsdt$,
+                npd$, offset$) {
+        this.cX$ = 0;
+        this.cY$ = yGap * (on$ - oi$) - height / 3;
+        this.rm$ = rm$;
+        this.color = rng.random_choice(palette);
+        this.ddn$ = ddn$;
+        this.nsr$ = nsr$;
+        this.nsdt$ = nsdt$;
+        this.npd$ = npd$;
+        this.offset$ = offset$;
+    }
+
+    draw$() {
+        this.nsdt$ += this.npd$;
+        fill(this.color);
+        let d = 1;
+        let rx_0;
+        let ry_0;
+        let rxl$;
+        let ryl$;
+        beginShape();
+        for (let i = 0; i < this.ddn$; i++) {
+            let tgti$ = i;
+            if (tgti$ >= this.ddn$) {
+                tgti$ -= this.ddn$;
+            }
+            let mang$ = 2 * PI / this.ddn$ * tgti$;
+            let rx = this.rm$ * (noise(this.nsr$, this.nsdt$) + this.offset$) ** d * cos(mang$);
+            let ry = this.rm$ * (noise(this.nsr$, this.nsdt$) + this.offset$) ** d * sin(mang$) / 2.5;
+            if (tgti$ == 0) {
+                rx_0 = rx;
+                ry_0 = ry;
+            } else if (tgti$ == this.ddn$ - 2) {
+                rxl$ = rx;
+                ryl$ = ry;
+            } else if (tgti$ == this.ddn$ - 1) {
+                rx = (rx_0 + rxl$) / 2;
+                ry = (ry_0 + ryl$) / 2;
+            }
+            vertex(this.cX$ + rx, this.cY$ + ry);
+        }
+        beginContour();
+        for (let i = 0; i < this.ddn$; i++) {
+            let tgti$ = i;
+            if (tgti$ >= this.ddn$) {
+                tgti$ -= this.ddn$;
+            }
+            let mang$ = 2 * PI / this.ddn$ * tgti$;
+            let rx = this.rm$ * (noise(this.nsr$, this.nsdt$ + 0.1) + this.offset$) ** d * cos(-mang$ + PI / 2);
+            let ry = this.rm$ * (noise(this.nsr$, this.nsdt$ + 0.1) + this.offset$) ** d * sin(-mang$ + PI / 2) / 2.5;
+            if (tgti$ == 0) {
+                rx_0 = rx;
+                ry_0 = ry;
+            } else if (tgti$ == this.ddn$ - 2) {
+                rxl$ = rx;
+                ryl$ = ry;
+            } else if (tgti$ == this.ddn$ - 1) {
+                rx = (rx_0 + rxl$) / 2;
+                ry = (ry_0 + ryl$) / 2;
+            }
+            vertex(this.cX$ + rx / 1.1, this.cY$ + ry / 1.1);
+        }
+        endContour();
+        endShape();
+    }
+}
+
 function draw() {
-    background(ColorPalette.shadow);
-    noiseSeed(seed);
-    let minval = -0.8;
-    let maxval = 0.5;
-    timeval = timeRandomness + 0.5
-    directionalLight(lerpColor(color(0), color(ColorPalette.shade), timeval), 0.5, 1.0, -1.0);
-    ambientLight(lerpColor(color(255), isNight ? color(30) : color(220), timeval));
-    castle.draw();
-}
-function easeOutElastic(x) {
-    const c4 = (2 * Math.PI) / 3;
-
-    return x === 0
-        ? 0
-        : x === 1
-            ? 1
-            : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1;
-}
-function easeInOutQuart(x) {
-    return x < 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2;
-}
-class Castle{
-    constructor(){
-        this.setup();
+    if (frameCount % 7 == 0) {
+        bG = lerpColor(color(palette[0]), color(palette[frameCount % 4]), .01);
+        background(bG)
+    } else {
+        background(bG)
     }
-
-    setup(){
-        let maxnum = rng.random_int(2,20);
-        this.size = min(WIDTH, HEIGHT) / gridsize * 1.7;
-        this.x = gridsize;
-        this.y = gridsize;
-
-        this.positions = [];
-        this.heights = [];
-        this.stairinfos = [];
-        this.windowinfos = [];
-
-        for(let n=0; n<this.y; n++){
-            let ii = 1;
-            for(let i=0; i<this.x; i++){
-                let pos = createVector(i * this.size, 0, n * this.size);
-                this.positions.push(pos);
-                let rng9 = rng.random_between(0,1)
-                if(pow(rng9, 3) < 0.1){
-                    ii++;
-                }
-                let t = n / (this.y - 1.0);
-                t = pow(t, 0.5);
-                this.heights.push(this.size * ceil(max(ii * t, 1)));
-            }
-        }
-
-        for(let n=0; n<this.y-1; n++){
-            for(let i=0; i<this.x-1; i++){
-                let index1 = n * this.x + i;
-                let index2 = n * this.x + i + 1;
-                let index3 = (n + 1) * this.x + i;
-                let h1 = this.heights[index1];
-                let h2 = this.heights[index2];
-                let h3 = this.heights[index3];
-                let rng1 = rng.random_between(0,1)
-                if(rng1 < 0.5){
-                    if(h1 + this.size == h2) {
-                        let rng4 = rng.random_between(0,1)
-                        this.stairinfos.push([index1, 1, rng4]);
-                    }
-                    else if(h1 + this.size == h3){
-                        let rng5 = rng.random_between(0,1)
-                        this.stairinfos.push([index1, 0, rng5]);
-                    }
-                }
-
-                if(h1 < h2){
-                    for(let t=h1; t<h2-1; t+= this.size){
-                        let rng2 = rng.random_between(0,1)
-                        if(rng2 < 0.3){
-                            let rng7 = rng.random_int(1, maxnum)
-                            let size = map(rng7, 1, maxnum-1, 0.2, 0.4);
-                            this.windowinfos.push([index1, 1, t, size]);
-                        }
-                    }
-                }
-
-                if(h1 < h3){
-                    for(let t=h1; t<h3-1; t+= this.size){
-                        let rng3 = rng.random_between(0,1)
-                        if(rng3 < 0.3){
-                            let rng8 = rng.random_int(1, maxnum)
-                            let size = map(floor(rng8, 1, maxnum-1, 0.2, 0.4));
-                            this.windowinfos.push([index1, 0, t, size]);
-                        }
-                    }
-                }
-            }
-        }
+    push();
+    translate(width / 2, height / 2);
+    for (let i = 0; i < aObj$.length; i++) {
+        aObj$[i].draw$();
     }
-
-    draw(){
-        // stroke(100);
-        noStroke();
-
-        push();
-        rotateX(radians(150));
-        rotateY(radians(-45));
-        translate(- this.x * 0.5 * this.size,  - this.size * this.y * 0.2, - this.y * 0.5 * this.size);
-
-
-        let scaleval = map(timeval, 0.0, 1.0, 0.0001, 1.0);
-        scaleval = easeOutElastic(scaleval);
-        scale(1.0, scaleval, 1.0);
-
-        this.drawBlocks();
-
-        for(let i=0; i<this.stairinfos.length; i++){
-            let stairinfo = this.stairinfos[i];
-            this.drawStairByIndex(stairinfo);
-        }
-
-        ambientMaterial(lerpColor(color(ColorPalette.shadow), color(ColorPalette.dark), timeval));
-        for(let i=0; i<this.windowinfos.length; i++){
-            let windowinfo = this.windowinfos[i];
-            this.drawWindowByIndex(windowinfo);
-        }
-        pop();
-    }
-
-    drawBlocks(){
-        for(let i=0; i<this.positions.length; i++){
-            push();
-            let pos = this.positions[i];
-            let h = this.heights[i];
-            let val = h / (this.y * this.size * 0.5);
-            let col = lerpColor(color(ColorPalette.shadow), color(ColorPalette.light), val);
-            col = lerpColor(color(ColorPalette.shadow), col, timeval);
-            ambientMaterial(col);
-            translate(pos.x , pos.y + h * 0.5 , pos.z );
-            scale(this.size, h, this.size);
-            box(1.0);
-            pop();
-        }
-    }
-
-    drawWindowByIndex(windowinfo){
-        let index = windowinfo[0];
-        let dir = windowinfo[1];
-        let hadd = windowinfo[2];
-        let sc = windowinfo[3];
-        let h = this.heights[index];
-        let pos = this.positions[index];
-
-
-        push();
-        translate(pos.x , pos.y + this.size * 0.5 + hadd, pos.z );
-        rotateY(-HALF_PI * dir);
-        translate(0,0, (-this.size * 0.5 + 0.1) * (dir - 0.5) * 2);
-        plane(this.size * sc, this.size * sc);
-        pop();
-    }
-
-    drawStairByIndex(stairinfo){
-        let index = stairinfo[0];
-        let dir = stairinfo[1];
-        let shift = stairinfo[2];
-
-        let pos = this.positions[index];
-        let h = this.heights[index];
-
-        let val = h / (this.y * this.size * 0.5);
-
-        let stepsize = this.size / stairnum;
-        let col = lerpColor(color(ColorPalette.shadow), color(ColorPalette.light), val);
-        col = lerpColor(color(ColorPalette.shadow), col, timeval);
-        ambientMaterial(col);
-        push();
-        translate(pos.x, h + pos.y, pos.z );
-        rotateY(HALF_PI * dir);
-        translate(0,0,-this.size * 0.5);
-        for(let i=1; i<stairnum; i++){
-            push();
-            let minval = -0.5;
-            let maxval = 0.5;
-            let sanim = map(constrain(sin(radians(frameCount * 1) + shift * TWO_PI), minval, maxval), minval, maxval, 0, 1.0);
-            sanim = max(0.0001, easeInOutQuart(sanim));
-            translate(0,stepsize * i * 0.5 * sanim, stepsize * 0.5 + stepsize * i);
-            scale(this.size, stepsize * i * sanim, stepsize);
-            box(1.0);
-            pop();
-        }
-        pop();
-    }
+    pop();
 }

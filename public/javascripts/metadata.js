@@ -92,31 +92,38 @@ module.exports = function getAttributes(hash) {
         "212529-000000-adb5bd-495057-f8f9fa", // HappilyDepressedSoul
     ].map(palette => palette.split('-').map(c => '#' + c))
     let palette = rng.random_choice(palettes);
-    let timeRandomness = rng.random_between(0, 1)
-    let isNight = timeRandomness < 0.05;
-    let stairnum = rng.random_int(3, 6);
-    let gridsize = rng.random_int(8, 36)
+    let bG = color(palette[0]);
+
     let paletteIndex = palettes.indexOf(palette)
+    let on$ = rng.random_int(20, 100)
+    let ddn$ = rng.random_int(30, 180);
+    let nsr$ = rng.random_int(0, 10);
+    let npd$ = rng.random_between(0.001, 0.01);
+
     return [
         {
-            "trait_type": "Stair Count",
-            "value": stairnum?.toString()
+            "trait_type": "Objects",
+            "value": on$.toString()
         },
         {
-            "trait_type": "Light Tone",
-            "value": isNight ? "dark" : "light"
+            "trait_type": "Type",
+            "value": ddn$ < 90 ? "sharp" : "soft"
         },
         {
-            "trait_type": "Grid Size",
-            "value": gridsize?.toString()
+            "trait_type": "Speed",
+            "value": npd$ > 0.008 ? "fast" : npd$ > 0.05 ? "moderate" : "slow"
+        },
+        {
+            "trait_type": "Background",
+            "value": bG
         },
         {
             "trait_type": "Palette",
-            "value": colorNames[paletteIndex]?.toString()
+            "value": colorNames[paletteIndex]
         },
         {
             "trait_type": "Palette Colors",
-            "value": JSON.stringify(palette)
+            "value": JSON.stringify(palettes[paletteIndex])
         },
     ]
 }

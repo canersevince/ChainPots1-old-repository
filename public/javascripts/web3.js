@@ -5,7 +5,7 @@ let providerRw
 let contract
 let contractRW
 let signer
-let contractAddress = "0xAfFB101A5168ed99D7642746aC5390d8F7CF271E"
+let contractAddress = "0xFb621De1C5D79B1f42487b03d23b0E7651087cdD"
 let baseURI = "https://stairwaytochain.herokuapp.com"
 let infuraAPI = "https://rinkeby.infura.io/v3/8f5b089af6e9483ca2ba3b01f9f5a442"
 let supply
@@ -57,7 +57,7 @@ async function mint() {
     if(amount > 0){
         let value = ethers.utils.parseEther((price*amount).toString())
         console.log({amount, value, a: value.toString()})
-        const tx = await contractRW.mintStairs(amount, {value: value})
+        const tx = await contractRW.mintPots(amount, {value: value})
         const receipt = await tx.wait()
         if (receipt.confirmations >= 1) {
             alert('NFTs minted!')

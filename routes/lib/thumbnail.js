@@ -26,21 +26,26 @@ const uploadFile = async (file) => {
 }
 
 module.exports = async (tokenId) => {
-    const browser = await puppeteer.launch({
-        defaultViewport: {width: 275, height: 275},
-        headless: true,
-        args: ['--no-sandbox']
-    });    // Launch a "browser"
-    const page = await browser.newPage();        // Open a new page
-    await page.goto(`${baseURI}/generator/${tokenId}`);                        // Go to the website
-    let ss = await page.screenshot({                      // Screenshot the website using defined options
-        fullPage: true,
-        type: "jpeg",
-        quality: 80
-        // encoding: "base64"// take a fullpage screenshot
-    });
-    await page.close();                           // Close the website
-    await browser.close();
-    let hash = await uploadFile(ss)
-    return hash
+    try {
+        const browser = await puppeteer.launch({
+            defaultViewport: {width: 275, height: 275},
+            headless: true,
+            args: ['--no-sandbox']
+        });    // Launch a "browser"
+        const page = await browser.newPage();        // Open a new page
+        await page.goto(`${baseURI}/generator/${tokenId}`);                        // Go to the website
+        let ss = await page.screenshot({                      // Screenshot the website using defined options
+            fullPage: true,
+            type: "jpeg",
+            quality: 80
+            // encoding: "base64"// take a fullpage screenshot
+        });
+        await page.close();                           // Close the website
+        await browser.close();
+        return await uploadFile(ss)
+    }
+    catch (e) {
+        console.log(e)
+        return  null
+    }
 }

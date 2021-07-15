@@ -17,14 +17,11 @@ router.get('/token/:id', async function (req, res, next) {
             res.status(202)
             return
         }
-        await mc.get(`token_${id.toString()}`, function (err, val) {
-            if (err != null) {
-                console.log('Error getting value: ' + err)
-            } else {
-                res.status(200).json(JSON.parse(val))
-                return
-            }
-        })
+        const cached = await mc.get(`token_${id.toString()}`)
+        if (cached) {
+            res.status(200).json(JSON.parse(cached))
+            return
+        }
         isBusy = true
         const hash = await contract.tokenHash(id)
         if (!hash) {
@@ -47,20 +44,20 @@ router.get('/token/:id', async function (req, res, next) {
             description: `Generative NFT collection with limited supply and the scripts stored on Ethereum Blockchain. Inspired by on-chain art platform "Art Blocks".`,
             animation_url: `${baseURI}/generator/${id}`,
             token_uri: `${baseURI}/api/token/${id}`,
-            attributes: metadata || [],
+            attributes: metadata,
             external_url: `${baseURI}/token/${id}`,
             script_type: "p5js",
             aspect_ratio: "1",
         }
         await mc.set(`token_${id}`, JSON.stringify(metadata$)
             , {expires: 0}, function (err, val) {
-                if (err != null) {
+                if (err !== null) {
                     console.log('Error setting value: ' + err)
                     res.status(500).json(err)
                     return
                 }
-                res.status(200).json(val)
             })
+        res.status(200).json(metadata$)
     } catch (e) {
         console.log(e)
         res.status(404)

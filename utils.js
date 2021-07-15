@@ -15,6 +15,7 @@ var mc = memjs.Client.create(process.env.MEMCACHIER_SERVERS, {
     timeout: 1,      // default: 0.5 (seconds)
     keepAlive: true  // default: false
 })
+
 module.exports = {
     ...settings,
     contract,

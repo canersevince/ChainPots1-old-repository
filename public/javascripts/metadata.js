@@ -92,7 +92,7 @@ module.exports = function getAttributes(hash) {
         "212529-000000-adb5bd-495057-f8f9fa", // HappilyDepressedSoul
     ].map(palette => palette.split('-').map(c => '#' + c))
     let palette = rng.random_choice(palettes);
-    let bG = color(palette[0]);
+    let bG = palette[0];
 
     let paletteIndex = palettes.indexOf(palette)
     let on$ = rng.random_int(20, 100)
@@ -115,7 +115,7 @@ module.exports = function getAttributes(hash) {
         },
         {
             "trait_type": "Background",
-            "value": bG
+            "value": bG?.toString()
         },
         {
             "trait_type": "Palette",

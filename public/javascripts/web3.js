@@ -14,23 +14,27 @@ let price = 0.05
 $(document).ready(async function () {
     console.log("ready!");
     if (window.ethereum) {
-        window.ethereum.enable()
-        await window.ethereum?.send('eth_requestAccounts');
+        try {
+            // await window.ethereum.enable()
+            await window.ethereum?.send('eth_requestAccounts');
+        } catch (e) {
+            alert(e.message || e)
+        } finally {
+            provider = await new ethers.providers.getDefaultProvider(infuraAPI)
+            providerRw = await new ethers.providers.Web3Provider(web3.currentProvider)
+            console.log(provider,providerRw)
+            contract = await new ethers.Contract(contractAddress, ContractABI, provider)
+            contractRW = await new ethers.Contract(contractAddress, ContractABI, providerRw.getSigner())
+            $('#mintButton').click(() => {
+                mint()
+            })
+            await fetchSupplyAndPrice();
+        }
     }
-    provider = await new ethers.providers.getDefaultProvider(infuraAPI)
-    providerRw = await new ethers.providers.Web3Provider(web3.currentProvider)
-    console.log(provider,providerRw)
-    contract = await new ethers.Contract(contractAddress, ContractABI, provider)
-    contractRW = await new ethers.Contract(contractAddress, ContractABI, providerRw.getSigner())
-    console.log({ethers: ethers, signer, provider, contract})
-    $('#mintButton').click(() => {
-        mint()
-    })
-    await fetchSupplyAndPrice();
+
 });
 
 async function fetchSupplyAndPrice() {
-
     try {
         supply = await contract.totalSupply()
         $('div.loader').remove()

@@ -20,12 +20,14 @@ router.get('/token/:id', async function (req, res, next) {
         const cached = await mc.get(`token_${id.toString()}`)
         if (cached) {
             res.status(200).json(cached)
+            isBusy = false;
             return
         }
         isBusy = true
         const hash = await contract.tokenHash(id)
         if (!hash) {
             res.status(404)
+            isBusy = false;
             return
         }
         let metadata = getAttributes(hash)
@@ -54,12 +56,14 @@ router.get('/token/:id', async function (req, res, next) {
                 if (err !== null) {
                     console.log('Error setting value: ' + err)
                     res.status(500).json(err)
+                    isBusy = false;
                     return
                 }
             })
         res.status(200).json(metadata$)
     } catch (e) {
         console.log(e)
+        isBusy = false;
         res.status(404)
     }
 });

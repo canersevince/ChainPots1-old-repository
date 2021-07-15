@@ -23,16 +23,16 @@ router.get('/token/:id', async function (req, res, next) {
         const hash = await contract.tokenHash(id)
         let metadata = getAttributes(hash)
         console.info('Creating Thumbnail')
-        let image = await thumbnail(id)
-        console.log(image)
-        if (image) {
-            image = `https://ipfs.infura.io/ipfs/${image}`
-        }
+        // let image = await thumbnail(id)
+        // console.log(image)
+        // if (image) {
+        //     image = `https://ipfs.infura.io/ipfs/${image}`
+        // }
 
         console.log({metadata})
         cached[id] = {
             tokenId: id,
-            image,
+            image: "https://lh3.googleusercontent.com/DlPf9XbJw25Xo-9FEjIGrAGnUmJoJVaGp3_GC5cPXHH0tnw-WS3OiHXQKPCq9-8wEw6eWNNBZDjODuThd_QjC1ygacOlAftXJNpc=s302",
             hash,
             name: `Stairway To Chain - #${id}`,
             description: `Generative NFT collection with limited supply and the scripts stored on Ethereum Blockchain. Inspired by on-chain art platform "Art Blocks".`,
@@ -44,7 +44,7 @@ router.get('/token/:id', async function (req, res, next) {
             aspect_ratio: "1",
         }
         res.status(200).json({
-            image,
+            image: "https://lh3.googleusercontent.com/DlPf9XbJw25Xo-9FEjIGrAGnUmJoJVaGp3_GC5cPXHH0tnw-WS3OiHXQKPCq9-8wEw6eWNNBZDjODuThd_QjC1ygacOlAftXJNpc=s302",
             hash,
             name: `Stairway To Chain - #${id}`,
             description: `Generative NFT collection with limited supply and the scripts stored on Ethereum Blockchain. Inspired by on-chain art platform "Art Blocks".`,

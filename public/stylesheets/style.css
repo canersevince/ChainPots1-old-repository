@@ -175,3 +175,10 @@ body#generator {
         height: 32px;
     }
 }
+
+
+main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

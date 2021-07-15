@@ -14,9 +14,13 @@ router.get('/:tokenId', async function (req, res, next) {
         console.log('serving cache')
         return
     }
-    const hash = await contract.tokenHash(id)
-    cached[id] = hash
-    res.render('generator', {hash: hash});
+    try {
+        const hash = await contract.tokenHash(id)
+        cached[id] = hash
+        res.render('generator', {hash: hash});
+    } catch (e) {
+        console.log(e.message)
+    }
 });
 
 module.exports = router;

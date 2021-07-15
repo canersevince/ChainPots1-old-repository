@@ -36,7 +36,8 @@ module.exports = async (tokenId) => {
         }
         // Launch a "browser"
         const page = await browser.newPage();        // Open a new page
-        await page.goto(`${baseURI}/generator/${tokenId}`);                        // Go to the website
+        await page.goto(`${baseURI}/generator/${tokenId}`, {"waitUntil": "domcontentloaded", timeout: 0});                        // Go to the website
+        await page.waitForTimeout(500)
         let ss = await page.screenshot({                      // Screenshot the website using defined options
             fullPage: true,
             type: "jpeg",

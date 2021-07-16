@@ -3,9 +3,9 @@ var abi = require('./abi.json')
 var memjs = require('memjs')
 
 const settings = {
-    baseURI: "https://stairwaytochain.herokuapp.com",
-    contractAddress: "0xFb621De1C5D79B1f42487b03d23b0E7651087cdD",
-    infuraAPI: "https://rinkeby.infura.io/v3/8f5b089af6e9483ca2ba3b01f9f5a442"
+    baseURI: "https://chainpots.com",
+    contractAddress: "0x03Ce4a39Dd1146d052934836f73E2d7f82ab5Bba",
+    infuraAPI: "https://mainnet.infura.io/v3/09654b1282fd40b0ae16691e4b66484e"
 }
 const provider = new ethers.providers.getDefaultProvider(settings.infuraAPI)
 const contract = new ethers.Contract(settings.contractAddress, abi, provider)

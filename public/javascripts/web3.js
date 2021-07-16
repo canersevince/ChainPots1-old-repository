@@ -5,9 +5,9 @@ let providerRw
 let contract
 let contractRW
 let signer
-let contractAddress = "0xFb621De1C5D79B1f42487b03d23b0E7651087cdD"
-let baseURI = "https://stairwaytochain.herokuapp.com"
-let infuraAPI = "https://rinkeby.infura.io/v3/8f5b089af6e9483ca2ba3b01f9f5a442"
+let contractAddress = "0x03Ce4a39Dd1146d052934836f73E2d7f82ab5Bba"
+let baseURI = "https://chainpots.com"
+let infuraAPI = "https://mainnet.infura.io/v3/09654b1282fd40b0ae16691e4b66484e"
 let supply
 let price = 0.05
 
@@ -48,12 +48,16 @@ async function fetchSupplyAndPrice() {
 }
 
 async function mint() {
-    if(parseInt(providerRw.provider.chainId) !== 4) {
-        alert('WRONG NETWORK. WE ARE ON RINKEBY TESTNET')
+    if(parseInt(providerRw.provider.chainId) !== 1) {
+        alert('WRONG NETWORK. WE ARE ON MAINNET ETHEREUM')
         return
     }
+
+    if(supply > 1023) {
+        alert('SALE HAS ENDED. THANKS FOR ALL THE LOVE AND SUPPORT!')
+    }
+
     const amount = $('#mintAmount').val()
-    console.log(ethers.utils)
     if(amount > 0){
         let value = ethers.utils.parseEther((price*amount).toString())
         console.log({amount, value, a: value.toString()})

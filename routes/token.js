@@ -47,7 +47,7 @@ router.get('/token/:id', async function (req, res, next) {
             animation_url: `${baseURI}/generator/${id}`,
             token_uri: `${baseURI}/api/token/${id}`,
             attributes: metadata,
-            external_url: `${baseURI}/token/${id}`,
+            external_url: `${baseURI}/generator/${id}`,
             script_type: "p5js",
             aspect_ratio: "1",
         }

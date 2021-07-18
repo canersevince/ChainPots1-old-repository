@@ -1,0 +1,5 @@
+node_modules
+yarn.lock
+yarn-error.log
+public/javascripts/stairwaytochain2.js
+public/javascripts/nft2.js

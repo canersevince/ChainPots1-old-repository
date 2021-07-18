@@ -1,0 +1,12 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        // this is a good feature of pug.
+        // we are returning the token hash from our backend and storing it on the window scope, so we can reach and use it globally.
+        script window.tokenHash = "#{hash}"
+    body#generator
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js')
+        script(src='/javascripts/chainpot.js')
+

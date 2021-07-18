@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var {contract, baseURI, mc} = require('../utils')
-var thumbnail = require('./lib/thumbnail')
-var getAttributes = require('../public/javascripts/metadata')
+let express = require('express');
+let router = express.Router();
+let {contract, baseURI, mc} = require('../utils')
+let thumbnail = require('./lib/thumbnail')
+let getAttributes = require('../public/javascripts/metadata')
 /* GET home page. */
 let isBusy;
 
@@ -31,7 +31,7 @@ router.get('/token/:id', async function (req, res, next) {
             isBusy = false;
             return
         }
-        let metadata = getAttributes(hash)
+        let attributes = getAttributes(hash)
         console.info('Creating Thumbnail')
         let image = await thumbnail(id)
         console.log(image)
@@ -46,12 +46,15 @@ router.get('/token/:id', async function (req, res, next) {
             description: `Generative NFT collection with limited supply and the scripts stored on Ethereum Blockchain. Inspired by on-chain art platform "Art Blocks".`,
             animation_url: `${baseURI}/generator/${id}`,
             token_uri: `${baseURI}/api/token/${id}`,
-            attributes: metadata,
+            attributes: attributes,
             external_url: `${baseURI}/generator/${id}`,
             script_type: "p5js",
             aspect_ratio: "1",
         }
         console.log({metadata$})
+
+
+        // magical thing. heroku has a memory cache add-on. this way we can cache our responses and get a faster working api.
         await mc.set(`token_${id}`, JSON.stringify(metadata$)
             , {expires: 1200}, function (err, val) {
                 if (err !== null) {

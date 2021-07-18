@@ -1,5 +1,6 @@
 const settings = {}
 
+// these are global variables that we will use.
 let provider
 let providerRw
 let contract
@@ -11,6 +12,7 @@ let infuraAPI = "https://mainnet.infura.io/v3/09654b1282fd40b0ae16691e4b66484e"
 let supply
 let price = 0.05
 
+// i decided to used jquery(a javascript library) for this app because
 $(document).ready(async function () {
     console.log("ready!");
     if (window.ethereum) {
@@ -49,13 +51,17 @@ async function fetchSupplyAndPrice() {
 
 async function mint() {
     if(parseInt(providerRw.provider.chainId) !== 1) {
+        // always make sure you are on the right chain. so users don't lose any money.
         alert('WRONG NETWORK. WE ARE ON MAINNET ETHEREUM')
         return
     }
 
     if(supply > 1023) {
         alert('SALE HAS ENDED. THANKS FOR ALL THE LOVE AND SUPPORT!')
+        return
     }
+
+
 
     const amount = $('#mintAmount').val()
     if(amount > 0){

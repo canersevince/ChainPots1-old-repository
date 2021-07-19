@@ -60,4 +60,8 @@ chainpots/
 
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/)
+
+
+## used p5.js script for canvas
+https://openprocessing.org/sketch/1227657

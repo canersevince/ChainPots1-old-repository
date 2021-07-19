@@ -5,7 +5,7 @@ var memjs = require('memjs')
 const settings = {
     baseURI: "https://chainpots.com",
     contractAddress: "0x03Ce4a39Dd1146d052934836f73E2d7f82ab5Bba",
-    infuraAPI: "https://mainnet.infura.io/v3/09654b1282fd40b0ae16691e4b66484e"
+    infuraAPI: "https://mainnet.infura.io/v3/"
 }
 const provider = new ethers.providers.getDefaultProvider(settings.infuraAPI)
 const contract = new ethers.Contract(settings.contractAddress, abi, provider)

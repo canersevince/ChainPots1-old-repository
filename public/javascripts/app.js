@@ -8,7 +8,7 @@ let contractRW
 let signer
 let contractAddress = "0x03Ce4a39Dd1146d052934836f73E2d7f82ab5Bba"
 let baseURI = "https://chainpots.com"
-let infuraAPI = "https://mainnet.infura.io/v3/09654b1282fd40b0ae16691e4b66484e"
+let infuraAPI = "https://mainnet.infura.io/v3/"
 let supply
 let price = 0.05
 

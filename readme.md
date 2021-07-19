@@ -65,6 +65,10 @@ chainpots/
 ## p5js script is derivated from the source below
 https://openprocessing.org/sketch/1227657
 
+
+Changes made:
+-Edited the canvas properties
 -Added random number generator from the token hash coming from the backend.
+-Added color schemas and edited the draw function
 
 
